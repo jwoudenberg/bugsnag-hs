@@ -5,7 +5,6 @@
   "type": "object",
   "title": "The Root Schema",
   "required": [
-    "apiKey",
     "payloadVersion",
     "notifier",
     "events"
@@ -82,20 +81,7 @@
         "type": "object",
         "title": "The Items Schema",
         "required": [
-          "exceptions",
-          "breadcrumbs",
-          "request",
-          "threads",
-          "context",
-          "groupingHash",
-          "unhandled",
-          "severity",
-          "severityReason",
-          "user",
-          "app",
-          "device",
-          "session",
-          "metaData"
+          "exceptions"
         ],
         "properties": {
           "exceptions": {
@@ -108,9 +94,7 @@
               "title": "The Items Schema",
               "required": [
                 "errorClass",
-                "message",
-                "stacktrace",
-                "type"
+                "stacktrace"
               ],
               "properties": {
                 "errorClass": {
@@ -144,10 +128,7 @@
                     "required": [
                       "file",
                       "lineNumber",
-                      "columnNumber",
-                      "method",
-                      "inProject",
-                      "code"
+                      "method"
                     ],
                     "properties": {
                       "file": {
@@ -201,42 +182,13 @@
                         "$id": "#/properties/events/items/properties/exceptions/items/properties/stacktrace/items/properties/code",
                         "type": "object",
                         "title": "The Code Schema",
-                        "required": [
-                          "1",
-                          "2",
-                          "3"
-                        ],
-                        "properties": {
-                          "1": {
-                            "$id": "#/properties/events/items/properties/exceptions/items/properties/stacktrace/items/properties/code/properties/1",
-                            "type": "string",
-                            "title": "The 1 Schema",
-                            "default": "",
-                            "examples": [
-                              "def a"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "2": {
-                            "$id": "#/properties/events/items/properties/exceptions/items/properties/stacktrace/items/properties/code/properties/2",
-                            "type": "string",
-                            "title": "The 2 Schema",
-                            "default": "",
-                            "examples": [
-                              "raise 'something went wrong' if problem?"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "3": {
-                            "$id": "#/properties/events/items/properties/exceptions/items/properties/stacktrace/items/properties/code/properties/3",
-                            "type": "string",
-                            "title": "The 3 Schema",
-                            "default": "",
-                            "examples": [
-                              "end"
-                            ],
-                            "pattern": "^(.*)$"
-                          }
+                        "properties": {},
+                        "additionalProperties": {
+                          "type": "string",
+                          "default": "",
+                          "examples": [
+                            "def a"
+                          ]
                         }
                       }
                     }
@@ -266,8 +218,7 @@
               "required": [
                 "timestamp",
                 "name",
-                "type",
-                "metaData"
+                "type"
               ],
               "properties": {
                 "timestamp": {
@@ -312,13 +263,6 @@
             "$id": "#/properties/events/items/properties/request",
             "type": "object",
             "title": "The Request Schema",
-            "required": [
-              "clientIp",
-              "headers",
-              "httpMethod",
-              "url",
-              "referer"
-            ],
             "properties": {
               "clientIp": {
                 "$id": "#/properties/events/items/properties/request/properties/clientIp",
@@ -375,13 +319,6 @@
               "$id": "#/properties/events/items/properties/threads/items",
               "type": "object",
               "title": "The Items Schema",
-              "required": [
-                "id",
-                "name",
-                "errorReportingThread",
-                "stacktrace",
-                "type"
-              ],
               "properties": {
                 "id": {
                   "$id": "#/properties/events/items/properties/threads/items/properties/id",
@@ -423,10 +360,7 @@
                     "required": [
                       "file",
                       "lineNumber",
-                      "columnNumber",
-                      "method",
-                      "inProject",
-                      "code"
+                      "method"
                     ],
                     "properties": {
                       "file": {
@@ -477,45 +411,16 @@
                         ]
                       },
                       "code": {
-                        "$id": "#/properties/events/items/properties/threads/items/properties/stacktrace/items/properties/code",
+                        "$id": "#/properties/events/items/properties/exceptions/items/properties/stacktrace/items/properties/code",
                         "type": "object",
                         "title": "The Code Schema",
-                        "required": [
-                          "1",
-                          "2",
-                          "3"
-                        ],
-                        "properties": {
-                          "1": {
-                            "$id": "#/properties/events/items/properties/threads/items/properties/stacktrace/items/properties/code/properties/1",
-                            "type": "string",
-                            "title": "The 1 Schema",
-                            "default": "",
-                            "examples": [
-                              "def a"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "2": {
-                            "$id": "#/properties/events/items/properties/threads/items/properties/stacktrace/items/properties/code/properties/2",
-                            "type": "string",
-                            "title": "The 2 Schema",
-                            "default": "",
-                            "examples": [
-                              "raise 'something went wrong' if problem?"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "3": {
-                            "$id": "#/properties/events/items/properties/threads/items/properties/stacktrace/items/properties/code/properties/3",
-                            "type": "string",
-                            "title": "The 3 Schema",
-                            "default": "",
-                            "examples": [
-                              "end"
-                            ],
-                            "pattern": "^(.*)$"
-                          }
+                        "properties": {},
+                        "additionalProperties": {
+                          "type": "string",
+                          "default": "",
+                          "examples": [
+                            "def a"
+                          ]
                         }
                       }
                     }
@@ -577,10 +482,6 @@
             "$id": "#/properties/events/items/properties/severityReason",
             "type": "object",
             "title": "The Severityreason Schema",
-            "required": [
-              "type",
-              "attributes"
-            ],
             "properties": {
               "type": {
                 "$id": "#/properties/events/items/properties/severityReason/properties/type",
@@ -596,13 +497,6 @@
                 "$id": "#/properties/events/items/properties/severityReason/properties/attributes",
                 "type": "object",
                 "title": "The Attributes Schema",
-                "required": [
-                  "errorType",
-                  "level",
-                  "signalType",
-                  "violationType",
-                  "errorClass"
-                ],
                 "properties": {
                   "errorType": {
                     "$id": "#/properties/events/items/properties/severityReason/properties/attributes/properties/errorType",
@@ -662,11 +556,6 @@
             "$id": "#/properties/events/items/properties/user",
             "type": "object",
             "title": "The User Schema",
-            "required": [
-              "id",
-              "name",
-              "email"
-            ],
             "properties": {
               "id": {
                 "$id": "#/properties/events/items/properties/user/properties/id",
@@ -704,21 +593,6 @@
             "$id": "#/properties/events/items/properties/app",
             "type": "object",
             "title": "The App Schema",
-            "required": [
-              "id",
-              "version",
-              "versionCode",
-              "bundleVersion",
-              "codeBundleId",
-              "buildUUID",
-              "releaseStage",
-              "type",
-              "dsymUUIDs",
-              "duration",
-              "durationInForeground",
-              "inForeground",
-              "binaryArch"
-            ],
             "properties": {
               "id": {
                 "$id": "#/properties/events/items/properties/app/properties/id",
@@ -857,25 +731,6 @@
             "$id": "#/properties/events/items/properties/device",
             "type": "object",
             "title": "The Device Schema",
-            "required": [
-              "hostname",
-              "id",
-              "manufacturer",
-              "model",
-              "modelNumber",
-              "osName",
-              "osVersion",
-              "freeMemory",
-              "totalMemory",
-              "freeDisk",
-              "browserName",
-              "browserVersion",
-              "jailbroken",
-              "orientation",
-              "time",
-              "cpuAbi",
-              "runtimeVersions"
-            ],
             "properties": {
               "hostname": {
                 "$id": "#/properties/events/items/properties/device/properties/hostname",
@@ -1042,59 +897,6 @@
                 "$id": "#/properties/events/items/properties/device/properties/runtimeVersions",
                 "type": "object",
                 "title": "The Runtimeversions Schema",
-                "required": [
-                  "androidApiLevel",
-                  "bottle",
-                  "celery",
-                  "clangVersion",
-                  "cocos2dx",
-                  "delayedJob",
-                  "django",
-                  "dotnet",
-                  "dotnetApiCompatibility",
-                  "dotnetClr",
-                  "dotnetScriptingRuntime",
-                  "eventMachine",
-                  "expoApp",
-                  "expoSdk",
-                  "flask",
-                  "gin",
-                  "go",
-                  "javaType",
-                  "javaVersion",
-                  "jruby",
-                  "laravel",
-                  "lumen",
-                  "magento",
-                  "mailman",
-                  "martini",
-                  "negroni",
-                  "node",
-                  "osBuild",
-                  "php",
-                  "python",
-                  "que",
-                  "rack",
-                  "rails",
-                  "rake",
-                  "reactNative",
-                  "reactNativeJsEngine",
-                  "resque",
-                  "revel",
-                  "ruby",
-                  "shoryoken",
-                  "sidekiq",
-                  "silex",
-                  "sinatra",
-                  "springBoot",
-                  "springFramework",
-                  "swift",
-                  "symfony",
-                  "tornado",
-                  "unity",
-                  "unityScriptingBackend",
-                  "wordpress"
-                ],
                 "properties": {
                   "androidApiLevel": {
                     "$id": "#/properties/events/items/properties/device/properties/runtimeVersions/properties/androidApiLevel",
