@@ -4,7 +4,10 @@
 
 -- | A module for building Bugsnag report payloads.
 module Network.Bugsnag
-  ( -- * Report
+  ( -- * Sending reports
+    send,
+
+    -- * Report
     Report (..),
     Event (..),
     Exception (..),
@@ -94,11 +97,40 @@ module Network.Bugsnag
 where
 
 import qualified Data.Aeson
+import qualified Data.ByteString.Char8
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
+import qualified Data.Text.Encoding
+import qualified Data.Time.Clock
+import qualified Data.Time.Format
 import qualified Distribution.PackageDescription.TH as CabalFile
 import GHC.Generics (Generic)
+import qualified Network.HTTP.Client as HTTP
+import qualified Network.HTTP.Types.Status as Status
 import Prelude
+
+-- |
+-- Send a report to Bugsnag.
+send :: HTTP.Manager -> Text -> Report -> IO Bool
+send manager apiKey report = do
+  now <- Data.Time.Clock.getCurrentTime
+  initReq <- HTTP.parseRequest "https://notify.bugsnag.com"
+  let req =
+        initReq
+          { HTTP.method = "POST",
+            HTTP.requestHeaders =
+              [ ("Bugsnag-Api-Key", Data.Text.Encoding.encodeUtf8 apiKey),
+                ("Content-Type", "application/json"),
+                ("Bugsnag-Payload-Version", "5"),
+                ("Bugsnag-Sent-At", Data.ByteString.Char8.pack (formatISO8601 now))
+              ],
+            HTTP.requestBody = HTTP.RequestBodyLBS (Data.Aeson.encode report)
+          }
+  let handleResponse = pure . Status.statusIsSuccessful . HTTP.responseStatus
+  HTTP.withResponse req manager handleResponse
+
+formatISO8601 :: Data.Time.Clock.UTCTime -> String
+formatISO8601 = Data.Time.Format.formatTime Data.Time.Format.defaultTimeLocale "%FT%T%QZ"
 
 -- | The payload of a POST request to https://notify.bugsnag.com/
 data Report

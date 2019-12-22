@@ -14,8 +14,12 @@ library:
   dependencies:
   - aeson
   - base
+  - bytestring
   - cabal-file-th
+  - http-client
+  - http-types
   - text
+  - time
   - unordered-containers
   exposed-modules:
   - Network.Bugsnag
