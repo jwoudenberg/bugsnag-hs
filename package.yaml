@@ -20,3 +20,18 @@ library:
   exposed-modules:
   - Network.Bugsnag
   source-dirs: src
+tests:
+  spec:
+    dependencies:
+    - aeson
+    - base
+    - bytestring
+    - bugsnag-hs
+    - hashable
+    - hedgehog
+    - shake
+    - text
+    - unordered-containers
+    main: Main.hs
+    source-dirs:
+    - test

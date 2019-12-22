@@ -88,6 +88,7 @@ module Network.Bugsnag
     arm64BinaryArch,
 
     -- ** CpuAbi
+    CpuAbi,
     x86_64CpuAbi,
   )
 where
@@ -113,7 +114,7 @@ data Report
         -- | An array of error events that Bugsnag should be notified of. A notifier can choose to group notices into an array to minimize network traffic, or can notify Bugsnag each time an event occurs.
         report_events :: [Event]
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Report where
 
@@ -124,7 +125,7 @@ instance Data.Aeson.ToJSON Report where
 -- | The version number of the payload. This is currently 5.
 -- The Bugsnag-Payload-Version header should be included as well, for compatibility reasons.
 newtype PayloadVersion = PayloadVersion Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON PayloadVersion where
 
@@ -146,7 +147,7 @@ data Notifier
         -- | The URL associated with the notifier.
         notifier_url :: Text
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Notifier where
 
@@ -183,7 +184,7 @@ data Event
         -- | Bugsnag's default error grouping can be overridden by specifying a custom grouping hash.
         event_groupingHash :: Maybe Text,
         -- | Whether the error was unhandled. If true, the error was detected by the notifier because it was not handled by the application. If false, the errors was handled and reported using Bugsnag.notify.
-        event_unhandled :: Bool,
+        event_unhandled :: Maybe Bool,
         -- | The severity of the error
         event_severity :: Maybe Severity,
         -- | Information about why the severity was picked.
@@ -200,7 +201,7 @@ data Event
         -- | An object containing any further data you wish to attach to this error event. This should contain one or more objects, with each object being displayed in its own tab on the event details on Bugsnag.
         event_metaData :: Maybe Data.Aeson.Object
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Event where
 
@@ -220,7 +221,7 @@ data Exception
         -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
         exception_type :: Maybe ExceptionType
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Exception where
 
@@ -244,7 +245,7 @@ data StackFrame
         -- | The code in this file surrounding this line. This is an object containing key value pairs where each key is a line number and each value is the code from that line. You can include up to three lines on either side of the line where the error occurred. These will be displayed on the bugsnag dashboard when you expand that line.
         code :: Maybe (HashMap Int Text)
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON StackFrame where
 
@@ -254,7 +255,7 @@ instance Data.Aeson.ToJSON StackFrame where
 
 -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
 newtype ExceptionType = ExceptionType Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON ExceptionType where
 
@@ -294,7 +295,7 @@ data Breadcrumb
         -- | Additional information about the event, as key/value pairs.
         breadcrumb_metaData :: Maybe (HashMap Text Text)
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Breadcrumb where
 
@@ -304,7 +305,7 @@ instance Data.Aeson.ToJSON Breadcrumb where
 
 -- | A category which describes the breadcrumb, from the list of allowed values.
 newtype BreadcrumbType = BreadcrumbType Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON BreadcrumbType where
 
@@ -358,7 +359,7 @@ data Request
         -- | The [HTTP referer](https://en.wikipedia.org/wiki/HTTP_referer)
         request_referer :: Maybe Text
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Request where
 
@@ -380,7 +381,7 @@ data Thread
         -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
         thread_type :: Maybe ThreadType
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Thread where
 
@@ -389,7 +390,7 @@ instance Data.Aeson.ToJSON Thread where
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
 newtype ThreadType = ThreadType Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON ThreadType where
 
@@ -411,7 +412,7 @@ browserjsThreadType = ThreadType "browserjs"
 
 -- | The severity of the error
 newtype Severity = Severity Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Severity where
 
@@ -439,7 +440,7 @@ data SeverityReason
         -- | Optional attributes to provide extra information about the severity reason.
         severityReason_attributes :: SeverityReasonAttributes
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReason where
 
@@ -449,7 +450,7 @@ instance Data.Aeson.ToJSON SeverityReason where
 
 -- | A type key that represents the reason for the assigned severity.
 newtype SeverityReasonType = SeverityReasonType Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReasonType where
 
@@ -539,7 +540,7 @@ data SeverityReasonAttributes
         -- | Included for errorClass severity reason. Specifies the error class that is automatically sent.
         severityreasonAttributes_errorClass :: Maybe Text
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReasonAttributes where
 
@@ -557,7 +558,7 @@ data User
         -- | The user's email address.
         user_email :: Maybe Text
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON User where
 
@@ -595,7 +596,7 @@ data App
         -- | The architecture of the running binary (Android only).
         app_binaryArch :: Maybe BinaryArch
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON App where
 
@@ -605,7 +606,7 @@ instance Data.Aeson.ToJSON App where
 
 -- | The architecture of the running binary (Android only).
 newtype BinaryArch = BinaryArch Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON BinaryArch where
 
@@ -667,7 +668,7 @@ data Device
         -- | The versions of the relevant runtimes, languages and/or frameworks for the platform.
         device_runtimeVersions :: Maybe RuntimeVersions
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Device where
 
@@ -677,7 +678,7 @@ instance Data.Aeson.ToJSON Device where
 
 -- | The ABIs supported by the device (Android only).
 newtype CpuAbi = CpuAbi Text
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON CpuAbi where
 
@@ -795,7 +796,7 @@ data RuntimeVersions
         -- | Wordpress version (PHP only).
         runtimeVersions_wordpress :: Maybe Text
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON RuntimeVersions where
 
@@ -814,7 +815,7 @@ data Session
         -- | Details of the number of handled and unhandled events that have occurred so far in this session.
         session_events :: SessionEvents
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Session where
 
@@ -830,7 +831,7 @@ data SessionEvents
         -- | The number of unhandled events that have occurred in this session (including this event)
         sessionEvents_unhandled :: Int
       }
-  deriving (Generic)
+  deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SessionEvents where
 
