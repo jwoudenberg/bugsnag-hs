@@ -13,11 +13,13 @@ extra-source-files:
 library:
   dependencies:
   - aeson
+  - auto-update
   - base
   - bytestring
   - cabal-file-th
   - http-client
   - http-types
+  - stm
   - text
   - time
   - unordered-containers
