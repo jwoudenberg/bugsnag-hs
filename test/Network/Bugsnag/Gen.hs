@@ -23,10 +23,13 @@ hashMap key val = HashMap.fromList <$> list ((,) <$> key <*> val)
 report :: Gen Bugsnag.Report
 report =
   Bugsnag.Report
-    <$> Gen.maybe text
+    <$> Gen.maybe apiKey
     <*> pure Bugsnag.payloadVersion5
     <*> pure Bugsnag.thisNotifier
     <*> list event
+
+apiKey :: Gen Bugsnag.ApiKey
+apiKey = Bugsnag.apiKey <$> text
 
 event :: Gen Bugsnag.Event
 event =

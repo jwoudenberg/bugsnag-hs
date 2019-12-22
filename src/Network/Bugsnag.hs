@@ -5,7 +5,11 @@
 -- | A module for building Bugsnag report payloads.
 module Network.Bugsnag
   ( -- * Sending reports
-    send,
+    sendEvents,
+
+    -- * ApiKey
+    ApiKey,
+    apiKey,
 
     -- * Report
     Report (..),
@@ -96,6 +100,7 @@ module Network.Bugsnag
   )
 where
 
+import Control.Monad (void)
 import qualified Data.Aeson
 import qualified Data.ByteString.Char8
 import Data.HashMap.Strict (HashMap)
@@ -107,12 +112,20 @@ import qualified Distribution.PackageDescription.TH as CabalFile
 import GHC.Generics (Generic)
 import qualified Network.HTTP.Client as HTTP
 import qualified Network.HTTP.Types.Status as Status
-import Prelude
 
 -- |
 -- Send a report to Bugsnag.
-send :: HTTP.Manager -> Text -> Report -> IO Bool
-send manager apiKey report = do
+sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO ()
+sendEvents manager apiKey events = do
+  void $ send manager apiKey Report
+    { report_apiKey = Nothing,
+      report_payloadVersion = payloadVersion5,
+      report_notifier = thisNotifier,
+      report_events = events
+    }
+
+send :: HTTP.Manager -> ApiKey -> Report -> IO Bool
+send manager (ApiKey apiKey) report = do
   now <- Data.Time.Clock.getCurrentTime
   initReq <- HTTP.parseRequest "https://notify.bugsnag.com"
   let req =
@@ -137,7 +150,7 @@ data Report
   = Report
       { -- | The API Key associated with the project. Informs Bugsnag which project has generated this error.
         -- This is provided for legacy notifiers. It is preferable to use the Bugsnag-Api-Key header instead.
-        report_apiKey :: Maybe Text,
+        report_apiKey :: Maybe ApiKey,
         -- | The version number of the payload. This is currently 5.
         -- The Bugsnag-Payload-Version header should be included as well, for compatibility reasons.
         report_payloadVersion :: PayloadVersion,
@@ -153,6 +166,20 @@ instance Data.Aeson.ToJSON Report where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | The API Key associated with the project. Informs Bugsnag which project has generated this error.
+newtype ApiKey = ApiKey Text
+  deriving (Generic, Show)
+
+instance Data.Aeson.ToJSON ApiKey where
+
+  toJSON = Data.Aeson.genericToJSON aesonOptions
+
+  toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | Construct an 'ApiKey' value.
+apiKey :: Text -> ApiKey
+apiKey = ApiKey
 
 -- | The version number of the payload. This is currently 5.
 -- The Bugsnag-Payload-Version header should be included as well, for compatibility reasons.
