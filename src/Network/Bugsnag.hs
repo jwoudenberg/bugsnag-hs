@@ -233,17 +233,17 @@ instance Data.Aeson.ToJSON Exception where
 data StackFrame
   = StackFrame
       { -- | The file that this stack frame was executing. It is recommended that you strip any unnecessary or common information from the beginning of the path.
-        file :: Text,
+        stackFrame_file :: Text,
         -- | The line of the file that this frame of the stack was in.
-        lineNumber :: Int,
+        stackFrame_lineNumber :: Int,
         -- | The column of the file that this frame of the stack was in.
-        columnNumber :: Maybe Int,
+        stackFrame_columnNumber :: Maybe Int,
         -- | The method that this particular stack frame is within.
-        method :: Text,
+        stackFrame_method :: Text,
         -- | If this stacktrace line is in the user's project code, set this to true. It is useful for developers to be able to see which lines of a stacktrace are within their own application, and which are within third party libraries. This boolean field allows Bugsnag to display this information in the stacktrace as well as use the information to help group errors better.
-        inProject :: Maybe Bool,
+        stackFrame_inProject :: Maybe Bool,
         -- | The code in this file surrounding this line. This is an object containing key value pairs where each key is a line number and each value is the code from that line. You can include up to three lines on either side of the line where the error occurred. These will be displayed on the bugsnag dashboard when you expand that line.
-        code :: Maybe (HashMap Int Text)
+        stackFrame_code :: Maybe (HashMap Int Text)
       }
   deriving (Generic, Show)
 
