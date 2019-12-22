@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | A module for building Bugsnag report payloads.
 module Network.Bugsnag
@@ -94,6 +95,7 @@ where
 import qualified Data.Aeson
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
+import qualified Distribution.PackageDescription.TH as CabalFile
 import GHC.Generics (Generic)
 import Prelude
 
@@ -155,10 +157,11 @@ instance Data.Aeson.ToJSON Notifier where
 -- | Information describing the notifier in this module.
 thisNotifier :: Notifier
 thisNotifier =
+  -- The fields below are read directly out of the cabal file for this project.
   Notifier
-    { notifier_name = "haskell-bugsnag",
-      notifier_version = "1.0.0.0",
-      notifier_url = "NoRedInk/haskell-bugsnag"
+    { notifier_name = $(CabalFile.packageVariable (CabalFile.pkgName . CabalFile.package)),
+      notifier_version = $(CabalFile.packageVariable (CabalFile.pkgVersion . CabalFile.package)),
+      notifier_url = $(CabalFile.packageVariable (CabalFile.packageString . CabalFile.homepage))
     }
 
 -- | An array of error events that Bugsnag should be notified of. A notifier can choose to group notices into an array to minimize network traffic, or can notify Bugsnag each time an event occurs.

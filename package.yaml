@@ -14,6 +14,7 @@ library:
   dependencies:
   - aeson
   - base
+  - cabal-file-th
   - text
   - unordered-containers
   exposed-modules:
