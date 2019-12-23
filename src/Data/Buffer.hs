@@ -37,15 +37,14 @@ data Settings a
 
 new :: Settings a -> IO (Buffer a)
 new settings = do
-  queue <- STM.atomically $ STM.newTBQueue (size settings)
+  queue <- STM.atomically $ STM.newTBQueue (fromIntegral (size settings))
   let writeList xs = maybe (pure ()) (write settings) (NonEmpty.nonEmpty xs)
   let flush = writeList =<< STM.atomically (STM.flushTBQueue queue)
   scheduleFlush <-
     Debounce.mkDebounce
       Debounce.defaultDebounceSettings
         { Debounce.debounceAction = flush,
-          Debounce.debounceFreq = frequencyInMicroSeconds settings,
-          Debounce.debounceEdge = Debounce.trailingEdge
+          Debounce.debounceFreq = frequencyInMicroSeconds settings
         }
   let push x = do
         overflow <- STM.atomically $ do
