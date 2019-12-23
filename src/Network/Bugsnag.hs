@@ -11,26 +11,222 @@ module Network.Bugsnag
     newBatcher,
     flushBatcher,
 
-    -- * ApiKey
+    -- ** ApiKey
     ApiKey,
     apiKey,
 
-    -- * Report
-    Report (..),
-    Event (..),
-    Exception (..),
-    StackFrame (..),
-    Breadcrumb (..),
-    Request (..),
-    Thread (..),
-    SeverityReason (..),
-    SeverityReasonAttributes (..),
-    User (..),
-    App (..),
-    Device (..),
-    RuntimeVersions (..),
-    Session (..),
-    SessionEvents (..),
+    -- ** Report
+    Report
+      ( report_apiKey,
+        report_payloadVersion,
+        report_notifier,
+        report_events
+      ),
+    defaultReport,
+
+    -- ** Event
+    Event
+      ( event_exceptions,
+        event_breadcrumbs,
+        event_request,
+        event_threads,
+        event_context,
+        event_groupingHash,
+        event_unhandled,
+        event_severity,
+        event_severityReason,
+        event_user,
+        event_app,
+        event_device,
+        event_session,
+        event_metaData
+      ),
+    defaultEvent,
+
+    -- ** Exception
+    Exception
+      ( exception_errorClass,
+        exception_message,
+        exception_stacktrace,
+        exception_type
+      ),
+    defaultException,
+
+    -- ** StackFrame
+    StackFrame
+      ( stackFrame_file,
+        stackFrame_lineNumber,
+        stackFrame_columnNumber,
+        stackFrame_method,
+        stackFrame_inProject,
+        stackFrame_code
+      ),
+    defaultStackFrame,
+
+    -- ** Breadcrumb
+    Breadcrumb
+      ( breadcrumb_timestamp,
+        breadcrumb_name,
+        breadcrumb_type,
+        breadcrumb_metaData
+      ),
+    defaultBreadcrumb,
+
+    -- ** Request
+    Request
+      ( request_clientIp,
+        request_headers,
+        request_httpMethod,
+        request_url,
+        request_referer
+      ),
+    defaultRequest,
+
+    -- ** Thread
+    Thread
+      ( thread_id,
+        thread_name,
+        thread_errorReportingThread,
+        thread_stacktrace,
+        thread_type
+      ),
+    defaultThread,
+
+    -- ** SeverityReason
+    SeverityReason
+      ( severityReason_type,
+        severityReason_attributes
+      ),
+    defaultSeverityReason,
+
+    -- ** SeverityReasonAttributes
+    SeverityReasonAttributes
+      ( severityReasonAttributes_errorType,
+        severityReasonAttributes_level,
+        severityReasonAttributes_signalType,
+        severityReasonAttributes_violationType,
+        severityReasonAttributes_errorClass
+      ),
+    defaultSeverityReasonAttributes,
+
+    -- ** User
+    User
+      ( user_id,
+        user_name,
+        user_email
+      ),
+    defaultUser,
+
+    -- ** App
+    App
+      ( app_id,
+        app_version,
+        app_versionCode,
+        app_bundleVersion,
+        app_codeBundleId,
+        app_buildUUID,
+        app_releaseStage,
+        app_type,
+        app_dsymUUIDs,
+        app_duration,
+        app_durationInForeground,
+        app_inForeground,
+        app_binaryArch
+      ),
+    defaultApp,
+
+    -- ** Device
+    Device
+      ( device_hostname,
+        device_id,
+        device_manufacturer,
+        device_model,
+        device_modelNumber,
+        device_osName,
+        device_osVersion,
+        device_freeMemory,
+        device_totalMemory,
+        device_freeDisk,
+        device_browserName,
+        device_browserVersion,
+        device_jailBroken,
+        device_orientation,
+        device_time,
+        device_cpuAbi,
+        device_runtimeVersions
+      ),
+    defaultDevice,
+
+    -- ** RuntimeVersions
+    RuntimeVersions
+      ( runtimeVersions_androidApi,
+        runtimeVersions_bottle,
+        runtimeVersions_celery,
+        runtimeVersions_clangVersion,
+        runtimeVersions_cocos2dx,
+        runtimeVersions_delayedJob,
+        runtimeVersions_django,
+        runtimeVersions_dotnet,
+        runtimeVersions_dotnetApiCompatibility,
+        runtimeVersions_dotnetClr,
+        runtimeVersions_dotnetScriptingRuntime,
+        runtimeVersions_eventMachine,
+        runtimeVersions_expoApp,
+        runtimeVersions_expoSdk,
+        runtimeVersions_flask,
+        runtimeVersions_gin,
+        runtimeVersions_go,
+        runtimeVersions_javaType,
+        runtimeVersions_javaVersion,
+        runtimeVersions_jruby,
+        runtimeVersions_laravel,
+        runtimeVersions_lumen,
+        runtimeVersions_magento,
+        runtimeVersions_mailman,
+        runtimeVersions_martini,
+        runtimeVersions_negroni,
+        runtimeVersions_node,
+        runtimeVersions_osBuild,
+        runtimeVersions_php,
+        runtimeVersions_python,
+        runtimeVersions_que,
+        runtimeVersions_rack,
+        runtimeVersions_rails,
+        runtimeVersions_rake,
+        runtimeVersions_reactNative,
+        runtimeVersions_reactNativeJsEngine,
+        runtimeVersions_resque,
+        runtimeVersions_revel,
+        runtimeVersions_ruby,
+        runtimeVersions_shoryoken,
+        runtimeVersions_sidekiq,
+        runtimeVersions_silex,
+        runtimeVersions_sinatra,
+        runtimeVersions_springBoot,
+        runtimeVersions_springFramework,
+        runtimeVersions_swift,
+        runtimeVersions_symfony,
+        runtimeVersions_tornado,
+        runtimeVersions_unity,
+        runtimeVersions_unityScriptingBackend,
+        runtimeVersions_wordpress
+      ),
+    defaultRuntimeVersions,
+
+    -- ** Session
+    Session
+      ( session_id,
+        session_startedAt,
+        session_events
+      ),
+    defaultSession,
+
+    -- ** SessionEvents
+    SessionEvents
+      ( sessionEvents_handled,
+        sessionEvents_unhandled
+      ),
+    defaultSessionEvents,
 
     -- ** PayloadVersion
     PayloadVersion,
@@ -202,6 +398,16 @@ instance Data.Aeson.ToJSON Report where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+-- | A default report.
+defaultReport :: Report
+defaultReport =
+  Report
+    { report_apiKey = Nothing,
+      report_payloadVersion = payloadVersion5,
+      report_notifier = thisNotifier,
+      report_events = []
+    }
+
 -- | The API Key associated with the project. Informs Bugsnag which project has generated this error.
 newtype ApiKey = ApiKey Text
   deriving (Generic, Show)
@@ -303,6 +509,26 @@ instance Data.Aeson.ToJSON Event where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+-- | A default event.
+defaultEvent :: Event
+defaultEvent =
+  Event
+    { event_exceptions = [],
+      event_breadcrumbs = Nothing,
+      event_request = Nothing,
+      event_threads = Nothing,
+      event_context = Nothing,
+      event_groupingHash = Nothing,
+      event_unhandled = Nothing,
+      event_severity = Nothing,
+      event_severityReason = Nothing,
+      event_user = Nothing,
+      event_app = Nothing,
+      event_device = Nothing,
+      event_session = Nothing,
+      event_metaData = Nothing
+    }
+
 -- | An exception that occurred during this event.
 data Exception
   = Exception
@@ -322,6 +548,16 @@ instance Data.Aeson.ToJSON Exception where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default exception.
+defaultException :: Exception
+defaultException =
+  Exception
+    { exception_errorClass = "",
+      exception_message = Nothing,
+      exception_stacktrace = [],
+      exception_type = Nothing
+    }
 
 -- | Each stackrame represents one line in the exception's stacktrace. Bugsnag uses this information to help with error grouping, as well as displaying it to the user.
 data StackFrame
@@ -346,6 +582,18 @@ instance Data.Aeson.ToJSON StackFrame where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default stackFrame.
+defaultStackFrame :: StackFrame
+defaultStackFrame =
+  StackFrame
+    { stackFrame_file = "",
+      stackFrame_lineNumber = 0,
+      stackFrame_columnNumber = Nothing,
+      stackFrame_method = "",
+      stackFrame_inProject = Nothing,
+      stackFrame_code = Nothing
+    }
 
 -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
 newtype ExceptionType = ExceptionType Text
@@ -396,6 +644,16 @@ instance Data.Aeson.ToJSON Breadcrumb where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default breadcrumb.
+defaultBreadcrumb :: Breadcrumb
+defaultBreadcrumb =
+  Breadcrumb
+    { breadcrumb_timestamp = "",
+      breadcrumb_name = "",
+      breadcrumb_type = navigationBreadcrumbType,
+      breadcrumb_metaData = Nothing
+    }
 
 -- | A category which describes the breadcrumb, from the list of allowed values.
 newtype BreadcrumbType = BreadcrumbType Text
@@ -461,6 +719,17 @@ instance Data.Aeson.ToJSON Request where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+-- | A default request.
+defaultRequest :: Request
+defaultRequest =
+  Request
+    { request_clientIp = Nothing,
+      request_headers = Nothing,
+      request_httpMethod = Nothing,
+      request_url = Nothing,
+      request_referer = Nothing
+    }
+
 -- | An array of background threads. This is optional but recommended for apps that rely heavily on threading. Threads should be in an order that makes sense for your application.
 data Thread
   = Thread
@@ -482,6 +751,16 @@ instance Data.Aeson.ToJSON Thread where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default thread.
+defaultThread :: Thread
+defaultThread = Thread
+  { thread_id = Nothing,
+    thread_name = Nothing,
+    thread_errorReportingThread = Nothing,
+    thread_stacktrace = Nothing,
+    thread_type = Nothing
+  }
 
 newtype ThreadType = ThreadType Text
   deriving (Generic, Show)
@@ -541,6 +820,14 @@ instance Data.Aeson.ToJSON SeverityReason where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default severityReason.
+defaultSeverityReason :: SeverityReason
+defaultSeverityReason =
+  SeverityReason
+    { severityReason_type = unhandledExceptionSeverityReasonType,
+      severityReason_attributes = defaultSeverityReasonAttributes
+    }
 
 -- | A type key that represents the reason for the assigned severity.
 newtype SeverityReasonType = SeverityReasonType Text
@@ -624,15 +911,15 @@ outOfMemorySeverityReasonType = SeverityReasonType "outOfMemory"
 data SeverityReasonAttributes
   = SeverityReasonAttributes
       { -- | Included for unhandledError severity reason. See [PHP Error Constants](https://www.php.net/manual/en/errorfunc.constants.php).
-        severityreasonAttributes_errorType :: Maybe Text,
+        severityReasonAttributes_errorType :: Maybe Text,
         -- | Included for log severity reason.
-        severityreasonAttributes_level :: Maybe Text,
+        severityReasonAttributes_level :: Maybe Text,
         -- | Included for signal severity reason. See [Signal Codes](https://en.wikipedia.org/wiki/C_signal_handling).
-        severityreasonAttributes_signalType :: Maybe Text,
+        severityReasonAttributes_signalType :: Maybe Text,
         -- | Included for strictMode severity reason. See [Strict Mode](https://developer.android.com/reference/android/os/StrictMode.html).
-        severityreasonAttributes_violationType :: Maybe Text,
+        severityReasonAttributes_violationType :: Maybe Text,
         -- | Included for errorClass severity reason. Specifies the error class that is automatically sent.
-        severityreasonAttributes_errorClass :: Maybe Text
+        severityReasonAttributes_errorClass :: Maybe Text
       }
   deriving (Generic, Show)
 
@@ -641,6 +928,17 @@ instance Data.Aeson.ToJSON SeverityReasonAttributes where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default severityReasonAttributes.
+defaultSeverityReasonAttributes :: SeverityReasonAttributes
+defaultSeverityReasonAttributes =
+  SeverityReasonAttributes
+    { severityReasonAttributes_errorType = Nothing,
+      severityReasonAttributes_level = Nothing,
+      severityReasonAttributes_signalType = Nothing,
+      severityReasonAttributes_violationType = Nothing,
+      severityReasonAttributes_errorClass = Nothing
+    }
 
 -- | Information about the user affected by the error. These fields are optional but highly recommended. To display custom user data alongside these standard fields on the Bugsnag website, the custom data should be included in the metaData object in a user object.
 data User
@@ -659,6 +957,15 @@ instance Data.Aeson.ToJSON User where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default user.
+defaultUser :: User
+defaultUser =
+  User
+    { user_id = Nothing,
+      user_name = Nothing,
+      user_email = Nothing
+    }
 
 -- | Information about the app where the error occurred. These fields are optional but highly recommended. To display custom app data alongside these standard fields on the Bugsnag website, the custom data should be included in the metaData object in an app object.
 data App
@@ -697,6 +1004,25 @@ instance Data.Aeson.ToJSON App where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default app.
+defaultApp :: App
+defaultApp =
+  App
+    { app_id = Nothing,
+      app_version = Nothing,
+      app_versionCode = Nothing,
+      app_bundleVersion = Nothing,
+      app_codeBundleId = Nothing,
+      app_buildUUID = Nothing,
+      app_releaseStage = Nothing,
+      app_type = Nothing,
+      app_dsymUUIDs = Nothing,
+      app_duration = Nothing,
+      app_durationInForeground = Nothing,
+      app_inForeground = Nothing,
+      app_binaryArch = Nothing
+    }
 
 -- | The architecture of the running binary (Android only).
 newtype BinaryArch = BinaryArch Text
@@ -769,6 +1095,28 @@ instance Data.Aeson.ToJSON Device where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default device.
+defaultDevice :: Device
+defaultDevice = Device
+  { device_hostname = Nothing,
+    device_id = Nothing,
+    device_manufacturer = Nothing,
+    device_model = Nothing,
+    device_modelNumber = Nothing,
+    device_osName = Nothing,
+    device_osVersion = Nothing,
+    device_freeMemory = Nothing,
+    device_totalMemory = Nothing,
+    device_freeDisk = Nothing,
+    device_browserName = Nothing,
+    device_browserVersion = Nothing,
+    device_jailBroken = Nothing,
+    device_orientation = Nothing,
+    device_time = Nothing,
+    device_cpuAbi = Nothing,
+    device_runtimeVersions = Nothing
+  }
 
 -- | The ABIs supported by the device (Android only).
 newtype CpuAbi = CpuAbi Text
@@ -898,6 +1246,63 @@ instance Data.Aeson.ToJSON RuntimeVersions where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+-- | A default runtimeVersions.
+defaultRuntimeVersions :: RuntimeVersions
+defaultRuntimeVersions =
+  RuntimeVersions
+    { runtimeVersions_androidApi = Nothing,
+      runtimeVersions_bottle = Nothing,
+      runtimeVersions_celery = Nothing,
+      runtimeVersions_clangVersion = Nothing,
+      runtimeVersions_cocos2dx = Nothing,
+      runtimeVersions_delayedJob = Nothing,
+      runtimeVersions_django = Nothing,
+      runtimeVersions_dotnet = Nothing,
+      runtimeVersions_dotnetApiCompatibility = Nothing,
+      runtimeVersions_dotnetClr = Nothing,
+      runtimeVersions_dotnetScriptingRuntime = Nothing,
+      runtimeVersions_eventMachine = Nothing,
+      runtimeVersions_expoApp = Nothing,
+      runtimeVersions_expoSdk = Nothing,
+      runtimeVersions_flask = Nothing,
+      runtimeVersions_gin = Nothing,
+      runtimeVersions_go = Nothing,
+      runtimeVersions_javaType = Nothing,
+      runtimeVersions_javaVersion = Nothing,
+      runtimeVersions_jruby = Nothing,
+      runtimeVersions_laravel = Nothing,
+      runtimeVersions_lumen = Nothing,
+      runtimeVersions_magento = Nothing,
+      runtimeVersions_mailman = Nothing,
+      runtimeVersions_martini = Nothing,
+      runtimeVersions_negroni = Nothing,
+      runtimeVersions_node = Nothing,
+      runtimeVersions_osBuild = Nothing,
+      runtimeVersions_php = Nothing,
+      runtimeVersions_python = Nothing,
+      runtimeVersions_que = Nothing,
+      runtimeVersions_rack = Nothing,
+      runtimeVersions_rails = Nothing,
+      runtimeVersions_rake = Nothing,
+      runtimeVersions_reactNative = Nothing,
+      runtimeVersions_reactNativeJsEngine = Nothing,
+      runtimeVersions_resque = Nothing,
+      runtimeVersions_revel = Nothing,
+      runtimeVersions_ruby = Nothing,
+      runtimeVersions_shoryoken = Nothing,
+      runtimeVersions_sidekiq = Nothing,
+      runtimeVersions_silex = Nothing,
+      runtimeVersions_sinatra = Nothing,
+      runtimeVersions_springBoot = Nothing,
+      runtimeVersions_springFramework = Nothing,
+      runtimeVersions_swift = Nothing,
+      runtimeVersions_symfony = Nothing,
+      runtimeVersions_tornado = Nothing,
+      runtimeVersions_unity = Nothing,
+      runtimeVersions_unityScriptingBackend = Nothing,
+      runtimeVersions_wordpress = Nothing
+    }
+
 -- | Details of any session information associated with the event.
 -- This can be used alongside the Bugsnag Session Tracking API to associate the event with a session so that a release's crash rate can be determined.
 data Session
@@ -917,6 +1322,15 @@ instance Data.Aeson.ToJSON Session where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+-- | A default session.
+defaultSession :: Session
+defaultSession =
+  Session
+    { session_id = "",
+      session_startedAt = "",
+      session_events = defaultSessionEvents
+    }
+
 -- | Details of the number of handled and unhandled events that have occurred so far in this session.
 data SessionEvents
   = SessionEvents
@@ -932,6 +1346,14 @@ instance Data.Aeson.ToJSON SessionEvents where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+-- | A default sessionEvents.
+defaultSessionEvents :: SessionEvents
+defaultSessionEvents =
+  SessionEvents
+    { sessionEvents_handled = 0,
+      sessionEvents_unhandled = 0
+    }
 
 aesonOptions :: Data.Aeson.Options
 aesonOptions =
