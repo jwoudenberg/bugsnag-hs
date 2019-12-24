@@ -1,3 +1,10 @@
-# Bugsnag
+# bugsnag-hs
 
-A bugsnag client for Haskell.
+A [Bugsnag][] client for Haskell. Bugsnag is an application monitoring and error reporting tool. This library provides an API for sending reports to the [Bugsnag error reporting API][].
+
+The library is low-level and provides a faithful representation of version 5 of the [Bugsnag error reporting API][] payload. Almost all documentation comments in this code come from that API's documentation. The intent is for this library to make no assumptions about the structure of the application using it.
+
+The one higher-level functionality this library provides is help batching Bugsnag events together to make fewer HTTP requests, but the use of this functionality is optional.
+
+[bugsnag]: https://www.bugsnag.com/
+[bugsnag error reporting api]: https://bugsnagerrorreportingapi.docs.apiary.io/#reference
