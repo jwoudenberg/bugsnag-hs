@@ -1,7 +1,7 @@
 name: bugsnag-hs
 version: 0.1.0.0
 synopsis: A Bugsnag client for Haskell.
-description: A Bugsnag client for Haskell.
+description: Please see the README at <https://github.com/jwoudenberg/bugsnag-hs>.
 author: Jasper Woudenberg
 maintainer: mail@jasperwoudenberg.com
 copyright: 2019 Jasper Woudenberg

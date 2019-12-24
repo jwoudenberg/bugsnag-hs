@@ -2,7 +2,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
--- | A module for building Bugsnag report payloads.
+-- |
+-- A module for building Bugsnag report payloads.
+-- Please see the README at <https://github.com/jwoudenberg/bugsnag-hs>.
 module Network.Bugsnag
   ( -- * Sending reports
     sendEvents,
@@ -16,217 +18,202 @@ module Network.Bugsnag
     apiKey,
 
     -- ** Report
-    Report
-      ( report_apiKey,
-        report_payloadVersion,
-        report_notifier,
-        report_events
-      ),
+    Report,
     defaultReport,
+    report_apiKey,
+    report_payloadVersion,
+    report_notifier,
+    report_events,
 
     -- ** Event
-    Event
-      ( event_exceptions,
-        event_breadcrumbs,
-        event_request,
-        event_threads,
-        event_context,
-        event_groupingHash,
-        event_unhandled,
-        event_severity,
-        event_severityReason,
-        event_user,
-        event_app,
-        event_device,
-        event_session,
-        event_metaData
-      ),
+    Event,
     defaultEvent,
+    event_exceptions,
+    event_breadcrumbs,
+    event_request,
+    event_threads,
+    event_context,
+    event_groupingHash,
+    event_unhandled,
+    event_severity,
+    event_severityReason,
+    event_user,
+    event_app,
+    event_device,
+    event_session,
+    event_metaData,
 
     -- ** Exception
-    Exception
-      ( exception_errorClass,
-        exception_message,
-        exception_stacktrace,
-        exception_type
-      ),
+    Exception,
     defaultException,
+    exception_errorClass,
+    exception_message,
+    exception_stacktrace,
+    exception_type,
 
     -- ** StackFrame
-    StackFrame
-      ( stackFrame_file,
-        stackFrame_lineNumber,
-        stackFrame_columnNumber,
-        stackFrame_method,
-        stackFrame_inProject,
-        stackFrame_code
-      ),
+    StackFrame,
     defaultStackFrame,
+    stackFrame_file,
+    stackFrame_lineNumber,
+    stackFrame_columnNumber,
+    stackFrame_method,
+    stackFrame_inProject,
+    stackFrame_code,
 
     -- ** Breadcrumb
-    Breadcrumb
-      ( breadcrumb_timestamp,
-        breadcrumb_name,
-        breadcrumb_type,
-        breadcrumb_metaData
-      ),
+    Breadcrumb,
     defaultBreadcrumb,
+    breadcrumb_timestamp,
+    breadcrumb_name,
+    breadcrumb_type,
+    breadcrumb_metaData,
 
     -- ** Request
-    Request
-      ( request_clientIp,
-        request_headers,
-        request_httpMethod,
-        request_url,
-        request_referer
-      ),
+    Request,
     defaultRequest,
+    request_clientIp,
+    request_headers,
+    request_httpMethod,
+    request_url,
+    request_referer,
 
     -- ** Thread
-    Thread
-      ( thread_id,
-        thread_name,
-        thread_errorReportingThread,
-        thread_stacktrace,
-        thread_type
-      ),
+    Thread,
     defaultThread,
+    thread_id,
+    thread_name,
+    thread_errorReportingThread,
+    thread_stacktrace,
+    thread_type,
 
     -- ** SeverityReason
-    SeverityReason
-      ( severityReason_type,
-        severityReason_attributes
-      ),
+    SeverityReason,
     defaultSeverityReason,
+    severityReason_type,
+    severityReason_attributes,
 
     -- ** SeverityReasonAttributes
-    SeverityReasonAttributes
-      ( severityReasonAttributes_errorType,
-        severityReasonAttributes_level,
-        severityReasonAttributes_signalType,
-        severityReasonAttributes_violationType,
-        severityReasonAttributes_errorClass
-      ),
+    SeverityReasonAttributes,
     defaultSeverityReasonAttributes,
+    severityReasonAttributes_errorType,
+    severityReasonAttributes_level,
+    severityReasonAttributes_signalType,
+    severityReasonAttributes_violationType,
+    severityReasonAttributes_errorClass,
 
     -- ** User
-    User
-      ( user_id,
-        user_name,
-        user_email
-      ),
+    User,
     defaultUser,
+    user_id,
+    user_name,
+    user_email,
 
     -- ** App
-    App
-      ( app_id,
-        app_version,
-        app_versionCode,
-        app_bundleVersion,
-        app_codeBundleId,
-        app_buildUUID,
-        app_releaseStage,
-        app_type,
-        app_dsymUUIDs,
-        app_duration,
-        app_durationInForeground,
-        app_inForeground,
-        app_binaryArch
-      ),
+    App,
     defaultApp,
+    app_id,
+    app_version,
+    app_versionCode,
+    app_bundleVersion,
+    app_codeBundleId,
+    app_buildUUID,
+    app_releaseStage,
+    app_type,
+    app_dsymUUIDs,
+    app_duration,
+    app_durationInForeground,
+    app_inForeground,
+    app_binaryArch,
 
     -- ** Device
-    Device
-      ( device_hostname,
-        device_id,
-        device_manufacturer,
-        device_model,
-        device_modelNumber,
-        device_osName,
-        device_osVersion,
-        device_freeMemory,
-        device_totalMemory,
-        device_freeDisk,
-        device_browserName,
-        device_browserVersion,
-        device_jailBroken,
-        device_orientation,
-        device_time,
-        device_cpuAbi,
-        device_runtimeVersions
-      ),
+    Device,
     defaultDevice,
+    device_hostname,
+    device_id,
+    device_manufacturer,
+    device_model,
+    device_modelNumber,
+    device_osName,
+    device_osVersion,
+    device_freeMemory,
+    device_totalMemory,
+    device_freeDisk,
+    device_browserName,
+    device_browserVersion,
+    device_jailBroken,
+    device_orientation,
+    device_time,
+    device_cpuAbi,
+    device_runtimeVersions,
 
     -- ** RuntimeVersions
-    RuntimeVersions
-      ( runtimeVersions_androidApi,
-        runtimeVersions_bottle,
-        runtimeVersions_celery,
-        runtimeVersions_clangVersion,
-        runtimeVersions_cocos2dx,
-        runtimeVersions_delayedJob,
-        runtimeVersions_django,
-        runtimeVersions_dotnet,
-        runtimeVersions_dotnetApiCompatibility,
-        runtimeVersions_dotnetClr,
-        runtimeVersions_dotnetScriptingRuntime,
-        runtimeVersions_eventMachine,
-        runtimeVersions_expoApp,
-        runtimeVersions_expoSdk,
-        runtimeVersions_flask,
-        runtimeVersions_gin,
-        runtimeVersions_go,
-        runtimeVersions_javaType,
-        runtimeVersions_javaVersion,
-        runtimeVersions_jruby,
-        runtimeVersions_laravel,
-        runtimeVersions_lumen,
-        runtimeVersions_magento,
-        runtimeVersions_mailman,
-        runtimeVersions_martini,
-        runtimeVersions_negroni,
-        runtimeVersions_node,
-        runtimeVersions_osBuild,
-        runtimeVersions_php,
-        runtimeVersions_python,
-        runtimeVersions_que,
-        runtimeVersions_rack,
-        runtimeVersions_rails,
-        runtimeVersions_rake,
-        runtimeVersions_reactNative,
-        runtimeVersions_reactNativeJsEngine,
-        runtimeVersions_resque,
-        runtimeVersions_revel,
-        runtimeVersions_ruby,
-        runtimeVersions_shoryoken,
-        runtimeVersions_sidekiq,
-        runtimeVersions_silex,
-        runtimeVersions_sinatra,
-        runtimeVersions_springBoot,
-        runtimeVersions_springFramework,
-        runtimeVersions_swift,
-        runtimeVersions_symfony,
-        runtimeVersions_tornado,
-        runtimeVersions_unity,
-        runtimeVersions_unityScriptingBackend,
-        runtimeVersions_wordpress
-      ),
+    RuntimeVersions,
     defaultRuntimeVersions,
+    runtimeVersions_androidApi,
+    runtimeVersions_bottle,
+    runtimeVersions_celery,
+    runtimeVersions_clangVersion,
+    runtimeVersions_cocos2dx,
+    runtimeVersions_delayedJob,
+    runtimeVersions_django,
+    runtimeVersions_dotnet,
+    runtimeVersions_dotnetApiCompatibility,
+    runtimeVersions_dotnetClr,
+    runtimeVersions_dotnetScriptingRuntime,
+    runtimeVersions_eventMachine,
+    runtimeVersions_expoApp,
+    runtimeVersions_expoSdk,
+    runtimeVersions_flask,
+    runtimeVersions_gin,
+    runtimeVersions_go,
+    runtimeVersions_javaType,
+    runtimeVersions_javaVersion,
+    runtimeVersions_jruby,
+    runtimeVersions_laravel,
+    runtimeVersions_lumen,
+    runtimeVersions_magento,
+    runtimeVersions_mailman,
+    runtimeVersions_martini,
+    runtimeVersions_negroni,
+    runtimeVersions_node,
+    runtimeVersions_osBuild,
+    runtimeVersions_php,
+    runtimeVersions_python,
+    runtimeVersions_que,
+    runtimeVersions_rack,
+    runtimeVersions_rails,
+    runtimeVersions_rake,
+    runtimeVersions_reactNative,
+    runtimeVersions_reactNativeJsEngine,
+    runtimeVersions_resque,
+    runtimeVersions_revel,
+    runtimeVersions_ruby,
+    runtimeVersions_shoryoken,
+    runtimeVersions_sidekiq,
+    runtimeVersions_silex,
+    runtimeVersions_sinatra,
+    runtimeVersions_springBoot,
+    runtimeVersions_springFramework,
+    runtimeVersions_swift,
+    runtimeVersions_symfony,
+    runtimeVersions_tornado,
+    runtimeVersions_unity,
+    runtimeVersions_unityScriptingBackend,
+    runtimeVersions_wordpress,
 
     -- ** Session
-    Session
-      ( session_id,
-        session_startedAt,
-        session_events
-      ),
+    Session,
     defaultSession,
+    session_id,
+    session_startedAt,
+    session_events,
 
     -- ** SessionEvents
-    SessionEvents
-      ( sessionEvents_handled,
-        sessionEvents_unhandled
-      ),
+    SessionEvents,
     defaultSessionEvents,
+    sessionEvents_handled,
+    sessionEvents_unhandled,
 
     -- ** PayloadVersion
     PayloadVersion,
@@ -318,7 +305,7 @@ import qualified Network.HTTP.Types.Status as Status
 -- | Send a batch of 'Event's to Rollbar using a single HTTP request.
 --
 -- If you only get your hands on one event at a time then 'queueSingleEvent' is
--- probably going to be more efficient then using this function.
+-- probably going to be more efficient.
 sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO ()
 sendEvents manager apiKey events = do
   void $ send manager apiKey Report
@@ -341,9 +328,9 @@ newBatcher manager apiKey = do
     }
   pure (Batcher buffer)
 
--- | Queue a single 'Event' for submission to Bugsnag. If there's lots of events
--- that get queued around the same moment they will be batched together and sent
--- in a single HTTP request.
+-- | Queue a single 'Event' for submission to Bugsnag. If multiple events are
+-- queued around the same moment they will be batched together and sent in a
+-- single HTTP request.
 queueSingleEvent :: Batcher -> Event -> IO ()
 queueSingleEvent (Batcher buffer) = Buffer.push buffer
 
@@ -774,7 +761,7 @@ data Thread
         thread_errorReportingThread :: Maybe Bool,
         -- | An array of stacktrace objects. Each object represents one line in the stacktrace of the thread at the point that the error occurred.
         thread_stacktrace :: Maybe [StackFrame],
-        -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
+        -- | Setting this allows the stacktrace to be parsed correctly.
         thread_type :: Maybe ThreadType
       }
   deriving (Generic, Show)
@@ -798,6 +785,7 @@ defaultThread = Thread
     thread_type = Nothing
   }
 
+-- | Used for parsing the stack trace correctly.
 newtype ThreadType = ThreadType Text
   deriving (Generic, Show)
 
