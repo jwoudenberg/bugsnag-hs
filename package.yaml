@@ -34,8 +34,6 @@ tests:
     - bytestring
     - bugsnag-hs
     - hashable
-    - hedgehog
-    - shake
     - text
     - unordered-containers
     main: Main.hs

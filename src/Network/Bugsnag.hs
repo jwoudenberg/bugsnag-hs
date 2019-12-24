@@ -398,6 +398,9 @@ instance Data.Aeson.ToJSON Report where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Report where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default report.
 defaultReport :: Report
 defaultReport =
@@ -418,6 +421,9 @@ instance Data.Aeson.ToJSON ApiKey where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON ApiKey where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | Construct an 'ApiKey' value.
 apiKey :: Text -> ApiKey
 apiKey = ApiKey
@@ -432,6 +438,9 @@ instance Data.Aeson.ToJSON PayloadVersion where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON PayloadVersion where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | This API only supports payload version 5.
 payloadVersion5 :: PayloadVersion
@@ -454,6 +463,9 @@ instance Data.Aeson.ToJSON Notifier where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON Notifier where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | Information describing the notifier in this module.
 thisNotifier :: Notifier
@@ -509,6 +521,9 @@ instance Data.Aeson.ToJSON Event where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Event where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default event.
 defaultEvent :: Event
 defaultEvent =
@@ -549,6 +564,9 @@ instance Data.Aeson.ToJSON Exception where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Exception where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default exception.
 defaultException :: Exception
 defaultException =
@@ -583,6 +601,9 @@ instance Data.Aeson.ToJSON StackFrame where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON StackFrame where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default stackFrame.
 defaultStackFrame :: StackFrame
 defaultStackFrame =
@@ -604,6 +625,9 @@ instance Data.Aeson.ToJSON ExceptionType where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON ExceptionType where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | For cocoa (iOS/tvOS/macOS)
 cocoaExceptionType :: ExceptionType
@@ -645,6 +669,9 @@ instance Data.Aeson.ToJSON Breadcrumb where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Breadcrumb where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default breadcrumb.
 defaultBreadcrumb :: Breadcrumb
 defaultBreadcrumb =
@@ -664,6 +691,9 @@ instance Data.Aeson.ToJSON BreadcrumbType where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON BreadcrumbType where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | Changing screens or content being displayed, with a defined destination and optionally a previous location.
 navigationBreadcrumbType :: BreadcrumbType
@@ -719,6 +749,9 @@ instance Data.Aeson.ToJSON Request where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Request where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default request.
 defaultRequest :: Request
 defaultRequest =
@@ -752,6 +785,9 @@ instance Data.Aeson.ToJSON Thread where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Thread where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default thread.
 defaultThread :: Thread
 defaultThread = Thread
@@ -770,6 +806,9 @@ instance Data.Aeson.ToJSON ThreadType where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON ThreadType where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | For cocoa (iOS/tvOS/macOS)
 cocoaThreadType :: ThreadType
@@ -792,6 +831,9 @@ instance Data.Aeson.ToJSON Severity where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON Severity where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | The default for unhandled errors.
 errorSeverity :: Severity
@@ -821,6 +863,9 @@ instance Data.Aeson.ToJSON SeverityReason where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON SeverityReason where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default severityReason.
 defaultSeverityReason :: SeverityReason
 defaultSeverityReason =
@@ -838,6 +883,9 @@ instance Data.Aeson.ToJSON SeverityReasonType where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON SeverityReasonType where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | Whenever an uncaught exception is discovered (generic).
 unhandledExceptionSeverityReasonType :: SeverityReasonType
@@ -929,6 +977,9 @@ instance Data.Aeson.ToJSON SeverityReasonAttributes where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON SeverityReasonAttributes where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default severityReasonAttributes.
 defaultSeverityReasonAttributes :: SeverityReasonAttributes
 defaultSeverityReasonAttributes =
@@ -957,6 +1008,9 @@ instance Data.Aeson.ToJSON User where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON User where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | A default user.
 defaultUser :: User
@@ -1005,6 +1059,9 @@ instance Data.Aeson.ToJSON App where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON App where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default app.
 defaultApp :: App
 defaultApp =
@@ -1033,6 +1090,9 @@ instance Data.Aeson.ToJSON BinaryArch where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON BinaryArch where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | x86/i386 (32-bit).
 x86BinaryArch :: BinaryArch
@@ -1096,6 +1156,9 @@ instance Data.Aeson.ToJSON Device where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Device where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default device.
 defaultDevice :: Device
 defaultDevice = Device
@@ -1127,6 +1190,9 @@ instance Data.Aeson.ToJSON CpuAbi where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON CpuAbi where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- |
 x86_64CpuAbi :: CpuAbi
@@ -1246,6 +1312,9 @@ instance Data.Aeson.ToJSON RuntimeVersions where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON RuntimeVersions where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default runtimeVersions.
 defaultRuntimeVersions :: RuntimeVersions
 defaultRuntimeVersions =
@@ -1322,6 +1391,9 @@ instance Data.Aeson.ToJSON Session where
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
+instance Data.Aeson.FromJSON Session where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
+
 -- | A default session.
 defaultSession :: Session
 defaultSession =
@@ -1346,6 +1418,9 @@ instance Data.Aeson.ToJSON SessionEvents where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
+
+instance Data.Aeson.FromJSON SessionEvents where
+  parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | A default sessionEvents.
 defaultSessionEvents :: SessionEvents

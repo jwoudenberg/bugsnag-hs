@@ -15,6 +15,5 @@ in pkgs.haskellPackages.shellFor {
     pkgs.haskellPackages.ghcid
     pkgs.haskellPackages.hpack
     ormolu
-    pkgs.pythonPackages.jsonschema
   ];
 }
