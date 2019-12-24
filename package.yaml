@@ -12,6 +12,8 @@ github: jwoudenberg/bugsnag-hs
 extra-doc-files:
 - README.md
 - CHANGELOG.md
+data-files:
+- test/sample-report.json
 library:
   dependencies:
   - aeson >= 1.2.4.0 && < 1.5
