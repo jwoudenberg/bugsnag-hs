@@ -297,7 +297,6 @@ import Data.Text (Text)
 import qualified Data.Text.Encoding
 import qualified Data.Time.Clock
 import qualified Data.Time.Format
-import qualified Distribution.PackageDescription.TH as CabalFile
 import GHC.Generics (Generic)
 import qualified Network.HTTP.Client as HTTP
 import qualified Network.HTTP.Types.Status as Status
@@ -459,9 +458,9 @@ thisNotifier :: Notifier
 thisNotifier =
   -- The fields below are read directly out of the cabal file for this project.
   Notifier
-    { notifier_name = $(CabalFile.packageVariable (CabalFile.pkgName . CabalFile.package)),
-      notifier_version = $(CabalFile.packageVariable (CabalFile.pkgVersion . CabalFile.package)),
-      notifier_url = $(CabalFile.packageVariable (CabalFile.packageString . CabalFile.homepage))
+    { notifier_name = "bugsnag-hs",
+      notifier_version = "0.1.0.0",
+      notifier_url = "https://github.com/jwoudenberg/bugsnag-hs#readme"
     }
 
 -- | An array of error events that Bugsnag should be notified of. A notifier can choose to group notices into an array to minimize network traffic, or can notify Bugsnag each time an event occurs.
