@@ -9,6 +9,7 @@ homepage: https://github.com/jwoudenberg/bugsnag-hs#readme
 license: BSD3
 license-file: LICENSE
 category: Web
+github: jwoudenberg/bugsnag-hs
 extra-doc-files:
 - README.md
 - CHANGELOG.md
