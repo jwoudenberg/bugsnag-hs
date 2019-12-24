@@ -5,6 +5,7 @@ module Main
   )
 where
 
+import qualified Data.ByteString
 import qualified Data.Aeson
 import qualified Network.Bugsnag as Bugsnag
 import qualified System.Exit
@@ -17,7 +18,8 @@ import qualified System.Exit
 -- correct format.
 main :: IO ()
 main = do
-  result <- Data.Aeson.eitherDecodeFileStrict' "./test/sample-report.json"
+  json <- Data.ByteString.readFile "./test/sample-report.json"
+  let result = Data.Aeson.eitherDecodeStrict' json
   case result of
     Right (_ :: Bugsnag.Report) -> pure ()
     Left err -> System.Exit.die err
