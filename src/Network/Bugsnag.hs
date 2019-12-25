@@ -287,6 +287,7 @@ module Network.Bugsnag
   )
 where
 
+import Control.Exception (try)
 import Control.Monad (void)
 import qualified Data.Aeson
 import qualified Data.Buffer as Buffer
@@ -299,15 +300,14 @@ import qualified Data.Time.Clock
 import qualified Data.Time.Format
 import GHC.Generics (Generic)
 import qualified Network.HTTP.Client as HTTP
-import qualified Network.HTTP.Types.Status as Status
 
 -- | Send a batch of 'Event's to Rollbar using a single HTTP request.
 --
 -- If you only get your hands on one event at a time then 'queueSingleEvent' is
 -- probably going to be more efficient.
-sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO ()
+sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO (Either HTTP.HttpException ())
 sendEvents manager apiKey events = do
-  void $ send manager apiKey Report
+  send manager apiKey Report
     { report_apiKey = Nothing,
       report_payloadVersion = payloadVersion5,
       report_notifier = thisNotifier,
@@ -318,12 +318,12 @@ sendEvents manager apiKey events = do
 newtype Batcher = Batcher (Buffer.Buffer Event)
 
 -- | Create a batcher, which you need to use the 'queueSingleEvent' function.
-newBatcher :: HTTP.Manager -> ApiKey -> IO Batcher
-newBatcher manager apiKey = do
+newBatcher :: HTTP.Manager -> ApiKey -> (HTTP.HttpException -> IO ()) -> IO Batcher
+newBatcher manager apiKey onError = do
   buffer <-
     Buffer.new
       Buffer.defaultSettings
-        { Buffer.write = sendEvents manager apiKey . toList,
+        { Buffer.write = \batch -> either onError pure =<< sendEvents manager apiKey (toList batch),
           Buffer.size = 100, -- Bugsnag limits requests to 1MB, so this allows for 10KB per event.
           Buffer.frequencyInMicroSeconds = 5000000 -- 5 seconds
         }
@@ -343,10 +343,10 @@ queueSingleEvent (Batcher buffer) = Buffer.push buffer
 flushBatcher :: Batcher -> IO ()
 flushBatcher (Batcher buffer) = Buffer.flush buffer
 
-send :: HTTP.Manager -> ApiKey -> Report -> IO Bool
+send :: HTTP.Manager -> ApiKey -> Report -> IO (Either HTTP.HttpException ())
 send manager (ApiKey apiKey) report = do
   now <- Data.Time.Clock.getCurrentTime
-  initReq <- HTTP.parseRequest "https://notify.bugsnag.com"
+  initReq <- HTTP.parseUrlThrow "https://notify.bugsnag.com"
   let req =
         initReq
           { HTTP.method = "POST",
@@ -358,8 +358,7 @@ send manager (ApiKey apiKey) report = do
               ],
             HTTP.requestBody = HTTP.RequestBodyLBS (Data.Aeson.encode report)
           }
-  let handleResponse = pure . Status.statusIsSuccessful . HTTP.responseStatus
-  HTTP.withResponse req manager handleResponse
+  try . void $ HTTP.httpNoBody req manager
 
 formatISO8601 :: Data.Time.Clock.UTCTime -> String
 formatISO8601 = Data.Time.Format.formatTime Data.Time.Format.defaultTimeLocale "%FT%T%QZ"
