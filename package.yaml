@@ -28,6 +28,7 @@ library:
   - unordered-containers >= 0.2.9.0 && < 0.3
   exposed-modules:
   - Network.Bugsnag
+  - Data.Buffer
   source-dirs: src
 tests:
   spec:
@@ -36,6 +37,8 @@ tests:
     - base >= 4.10.1.0 && < 5
     - bytestring >= 0.10.8.2 && < 0.11
     - bugsnag-hs
+    - hedgehog >= 0.5.2 && < 2.0
+    - stm >= 2.4.5.0 && < 2.6
     main: Main.hs
     source-dirs:
     - test
