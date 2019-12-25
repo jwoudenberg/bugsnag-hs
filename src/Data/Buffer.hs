@@ -4,11 +4,18 @@
 -- A buffer for batched write operations. Push individual items into the buffer
 -- and provide an operation that writes out batches of them.
 module Data.Buffer
-  ( Buffer,
-    Settings (..),
+  ( -- * Buffer
+    Buffer,
     new,
     push,
     flush,
+
+    -- * Settings
+    Settings,
+    defaultSettings,
+    write,
+    size,
+    frequencyInMicroSeconds,
   )
 where
 
@@ -17,6 +24,7 @@ import qualified Control.Debounce as Debounce
 import qualified Data.List.NonEmpty as NonEmpty
 import GHC.Natural (Natural)
 
+-- | A buffer for write operations.
 data Buffer a
   = Buffer
       { -- | Push a new item into the buffer.
@@ -25,6 +33,7 @@ data Buffer a
         flush :: IO ()
       }
 
+-- | Configuration settings for a new 'Buffer'.
 data Settings a
   = Settings
       { -- | Function to write a batch of items.
@@ -35,6 +44,17 @@ data Settings a
         frequencyInMicroSeconds :: Int
       }
 
+-- | Default 'Buffer' settings. A buffer created by these settings has a size
+-- of 1 and writes items out as soon as they come in.
+defaultSettings :: Settings a
+defaultSettings =
+  Settings
+    { write = \_ -> pure (),
+      size = 1,
+      frequencyInMicroSeconds = 0
+    }
+
+-- | Creates a new 'Buffer'.
 new :: Settings a -> IO (Buffer a)
 new settings = do
   queue <- STM.atomically $ STM.newTBQueue (fromIntegral (size settings))

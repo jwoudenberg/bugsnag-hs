@@ -320,11 +320,13 @@ newtype Batcher = Batcher (Buffer.Buffer Event)
 -- | Create a batcher, which you need to use the 'queueSingleEvent' function.
 newBatcher :: HTTP.Manager -> ApiKey -> IO Batcher
 newBatcher manager apiKey = do
-  buffer <- Buffer.new Buffer.Settings
-    { Buffer.write = sendEvents manager apiKey . toList,
-      Buffer.size = 100, -- Bugsnag limits requests to 1MB, so this allows for 10KB per event.
-      Buffer.frequencyInMicroSeconds = 5000000 -- 5 seconds
-    }
+  buffer <-
+    Buffer.new
+      Buffer.defaultSettings
+        { Buffer.write = sendEvents manager apiKey . toList,
+          Buffer.size = 100, -- Bugsnag limits requests to 1MB, so this allows for 10KB per event.
+          Buffer.frequencyInMicroSeconds = 5000000 -- 5 seconds
+        }
   pure (Batcher buffer)
 
 -- | Queue a single 'Event' for submission to Bugsnag. If multiple events are

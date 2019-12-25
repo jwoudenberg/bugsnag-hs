@@ -87,11 +87,12 @@ run size frequencyInMicroSeconds steps = do
   -- Setup the buffer to play the steps through.
   resultQueue <- STM.newTQueueIO
   buffer <-
-    Buffer.new Buffer.Settings
-      { Buffer.write = writeToQueue resultQueue,
-        Buffer.size,
-        Buffer.frequencyInMicroSeconds
-      }
+    Buffer.new
+      Buffer.defaultSettings
+        { Buffer.write = writeToQueue resultQueue,
+          Buffer.size,
+          Buffer.frequencyInMicroSeconds
+        }
   -- Play the steps one by one.
   Data.Foldable.traverse_ (play buffer) steps
   -- Give the queue the opportunity to flush by itself.
