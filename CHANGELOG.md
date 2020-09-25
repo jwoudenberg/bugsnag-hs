@@ -1,3 +1,8 @@
+# 0.2.0.0
+
+- Remove `Data.Buffer` module
+- Expand version bounds to include bytestring v0.12.
+
 # 0.1.0.3
 
 - Expand version bounds to include http-client v0.7.

@@ -8,10 +8,6 @@
 module Network.Bugsnag
   ( -- * Sending reports
     sendEvents,
-    queueSingleEvent,
-    Batcher,
-    newBatcher,
-    flushBatcher,
 
     -- ** ApiKey
     ApiKey,
@@ -290,7 +286,6 @@ where
 import Control.Exception (try)
 import Control.Monad (void)
 import qualified Data.Aeson
-import qualified Data.Buffer as Buffer
 import qualified Data.ByteString.Char8
 import Data.Foldable (toList)
 import Data.HashMap.Strict (HashMap)
@@ -302,9 +297,6 @@ import GHC.Generics (Generic)
 import qualified Network.HTTP.Client as HTTP
 
 -- | Send a batch of 'Event's to Rollbar using a single HTTP request.
---
--- If you only get your hands on one event at a time then 'queueSingleEvent' is
--- probably going to be more efficient.
 sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO (Either HTTP.HttpException ())
 sendEvents manager apiKey events = do
   send manager apiKey Report
@@ -313,35 +305,6 @@ sendEvents manager apiKey events = do
       report_notifier = thisNotifier,
       report_events = events
     }
-
--- | Helps you batch Bugsnag 'Event's together so you make fewer HTTP request.
-newtype Batcher = Batcher (Buffer.Buffer Event)
-
--- | Create a batcher, which you need to use the 'queueSingleEvent' function.
-newBatcher :: HTTP.Manager -> ApiKey -> (HTTP.HttpException -> IO ()) -> IO Batcher
-newBatcher manager apiKey onError = do
-  buffer <-
-    Buffer.new
-      Buffer.defaultSettings
-        { Buffer.write = \batch -> either onError pure =<< sendEvents manager apiKey (toList batch),
-          Buffer.size = 100, -- Bugsnag limits requests to 1MB, so this allows for 10KB per event.
-          Buffer.frequencyInMicroSeconds = 5000000 -- 5 seconds
-        }
-  pure (Batcher buffer)
-
--- | Queue a single 'Event' for submission to Bugsnag. If multiple events are
--- queued around the same moment they will be batched together and sent in a
--- single HTTP request.
-queueSingleEvent :: Batcher -> Event -> IO ()
-queueSingleEvent (Batcher buffer) = Buffer.push buffer
-
--- | When passing an 'Event' to 'queueSingleEvent' we wait briefly before
--- sending it to Bugsnag, to see if other 'Event's get queued we can send to
--- Bugsnag in a single HTTP request. This function allows you to immediately
--- send any 'Event's that are being held. You might use it when shutting down
--- your application.
-flushBatcher :: Batcher -> IO ()
-flushBatcher (Batcher buffer) = Buffer.flush buffer
 
 send :: HTTP.Manager -> ApiKey -> Report -> IO (Either HTTP.HttpException ())
 send manager (ApiKey apiKey) report = do
