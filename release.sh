@@ -13,6 +13,7 @@ grep "^# $version$" < CHANGELOG.md
 grep "notifier_version = \"$version\"" < src/Network/Bugsnag.hs
 
 # check copyright year is current year
+grep "^copyright: $(date +'%Y')" < package.yaml
 grep "Copyright (c) $(date +'%Y')" < LICENSE
 
 # check github release tag exists
