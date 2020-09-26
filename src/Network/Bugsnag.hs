@@ -423,7 +423,7 @@ thisNotifier =
   -- The fields below are read directly out of the cabal file for this project.
   Notifier
     { notifier_name = "bugsnag-hs",
-      notifier_version = "0.1.0.0",
+      notifier_version = "0.2.0.1",
       notifier_url = "https://github.com/jwoudenberg/bugsnag-hs#readme"
     }
 
