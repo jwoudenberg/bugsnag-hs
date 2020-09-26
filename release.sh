@@ -9,9 +9,6 @@ bundle="$name-$version.tar.gz"
 # check changelog contains an entry for this version
 grep "^# $version$" < CHANGELOG.md
 
-# check version in Network.Bugsnag is correct
-grep "notifier_version = \"$version\"" < src/Network/Bugsnag.hs
-
 # check copyright year is current year
 grep "^copyright: $(date +'%Y')" < package.yaml
 grep "Copyright (c) $(date +'%Y')" < LICENSE

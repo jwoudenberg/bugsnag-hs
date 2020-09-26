@@ -289,12 +289,14 @@ import qualified Data.Aeson
 import qualified Data.ByteString.Char8
 import Data.Foldable (toList)
 import Data.HashMap.Strict (HashMap)
-import Data.Text (Text)
+import Data.Text (Text, intercalate, pack)
 import qualified Data.Text.Encoding
 import qualified Data.Time.Clock
 import qualified Data.Time.Format
+import qualified Data.Version as Version
 import GHC.Generics (Generic)
 import qualified Network.HTTP.Client as HTTP
+import Paths_bugsnag_hs (version)
 
 -- | Send a batch of 'Event's to Rollbar using a single HTTP request.
 sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO (Either HTTP.HttpException ())
@@ -420,10 +422,9 @@ instance Data.Aeson.FromJSON Notifier where
 -- | Information describing the notifier in this module.
 thisNotifier :: Notifier
 thisNotifier =
-  -- The fields below are read directly out of the cabal file for this project.
   Notifier
     { notifier_name = "bugsnag-hs",
-      notifier_version = "0.2.0.1",
+      notifier_version = intercalate "." $ pack . show <$> Version.versionBranch version,
       notifier_url = "https://github.com/jwoudenberg/bugsnag-hs#readme"
     }
 
