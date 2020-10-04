@@ -1,4 +1,4 @@
-![travis-ci-badge](https://api.travis-ci.org/jwoudenberg/bugsnag-hs.svg?branch=trunk)
+[![Build Status](https://travis-ci.org/jwoudenberg/bugsnag-hs.svg?branch=trunk)](https://travis-ci.org/jwoudenberg/bugsnag-hs)
 
 # bugsnag-hs
 
