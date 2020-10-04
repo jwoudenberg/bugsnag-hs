@@ -301,12 +301,15 @@ import Paths_bugsnag_hs (version)
 -- | Send a batch of 'Event's to Rollbar using a single HTTP request.
 sendEvents :: HTTP.Manager -> ApiKey -> [Event] -> IO (Either HTTP.HttpException ())
 sendEvents manager apiKey events = do
-  send manager apiKey Report
-    { report_apiKey = Nothing,
-      report_payloadVersion = payloadVersion5,
-      report_notifier = thisNotifier,
-      report_events = events
-    }
+  send
+    manager
+    apiKey
+    Report
+      { report_apiKey = Nothing,
+        report_payloadVersion = payloadVersion5,
+        report_notifier = thisNotifier,
+        report_events = events
+      }
 
 send :: HTTP.Manager -> ApiKey -> Report -> IO (Either HTTP.HttpException ())
 send manager (ApiKey apiKey) report = do
@@ -345,7 +348,6 @@ data Report
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Report where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -368,7 +370,6 @@ newtype ApiKey = ApiKey Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON ApiKey where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -386,7 +387,6 @@ newtype PayloadVersion = PayloadVersion Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON PayloadVersion where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -411,7 +411,6 @@ data Notifier
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Notifier where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -467,7 +466,6 @@ data Event
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Event where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -510,7 +508,6 @@ data Exception
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Exception where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -547,7 +544,6 @@ data StackFrame
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON StackFrame where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -572,7 +568,6 @@ newtype ExceptionType = ExceptionType Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON ExceptionType where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -615,7 +610,6 @@ data Breadcrumb
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Breadcrumb where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -638,7 +632,6 @@ newtype BreadcrumbType = BreadcrumbType Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON BreadcrumbType where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -695,7 +688,6 @@ data Request
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Request where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -731,7 +723,6 @@ data Thread
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Thread where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -741,20 +732,20 @@ instance Data.Aeson.FromJSON Thread where
 
 -- | A default thread.
 defaultThread :: Thread
-defaultThread = Thread
-  { thread_id = Nothing,
-    thread_name = Nothing,
-    thread_errorReportingThread = Nothing,
-    thread_stacktrace = Nothing,
-    thread_type = Nothing
-  }
+defaultThread =
+  Thread
+    { thread_id = Nothing,
+      thread_name = Nothing,
+      thread_errorReportingThread = Nothing,
+      thread_stacktrace = Nothing,
+      thread_type = Nothing
+    }
 
 -- | Used for parsing the stack trace correctly.
 newtype ThreadType = ThreadType Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON ThreadType where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -779,7 +770,6 @@ newtype Severity = Severity Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Severity where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -810,7 +800,6 @@ data SeverityReason
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReason where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -831,7 +820,6 @@ newtype SeverityReasonType = SeverityReasonType Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReasonType where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -924,7 +912,6 @@ data SeverityReasonAttributes
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SeverityReasonAttributes where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -956,7 +943,6 @@ data User
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON User where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1006,7 +992,6 @@ data App
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON App where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1038,7 +1023,6 @@ newtype BinaryArch = BinaryArch Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON BinaryArch where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1103,7 +1087,6 @@ data Device
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Device where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1113,32 +1096,32 @@ instance Data.Aeson.FromJSON Device where
 
 -- | A default device.
 defaultDevice :: Device
-defaultDevice = Device
-  { device_hostname = Nothing,
-    device_id = Nothing,
-    device_manufacturer = Nothing,
-    device_model = Nothing,
-    device_modelNumber = Nothing,
-    device_osName = Nothing,
-    device_osVersion = Nothing,
-    device_freeMemory = Nothing,
-    device_totalMemory = Nothing,
-    device_freeDisk = Nothing,
-    device_browserName = Nothing,
-    device_browserVersion = Nothing,
-    device_jailBroken = Nothing,
-    device_orientation = Nothing,
-    device_time = Nothing,
-    device_cpuAbi = Nothing,
-    device_runtimeVersions = Nothing
-  }
+defaultDevice =
+  Device
+    { device_hostname = Nothing,
+      device_id = Nothing,
+      device_manufacturer = Nothing,
+      device_model = Nothing,
+      device_modelNumber = Nothing,
+      device_osName = Nothing,
+      device_osVersion = Nothing,
+      device_freeMemory = Nothing,
+      device_totalMemory = Nothing,
+      device_freeDisk = Nothing,
+      device_browserName = Nothing,
+      device_browserVersion = Nothing,
+      device_jailBroken = Nothing,
+      device_orientation = Nothing,
+      device_time = Nothing,
+      device_cpuAbi = Nothing,
+      device_runtimeVersions = Nothing
+    }
 
 -- | The ABIs supported by the device (Android only).
 newtype CpuAbi = CpuAbi Text
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON CpuAbi where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1259,7 +1242,6 @@ data RuntimeVersions
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON RuntimeVersions where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1338,7 +1320,6 @@ data Session
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Session where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
@@ -1366,7 +1347,6 @@ data SessionEvents
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON SessionEvents where
-
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
