@@ -1,3 +1,7 @@
+# 0.2.0.2
+
+- Drop dependency on auto-update and stm packages.
+
 # 0.2.0.1
 
 - Expand version bounds of test dependencies to include bytestring v0.12.
