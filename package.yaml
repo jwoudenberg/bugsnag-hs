@@ -4,7 +4,7 @@ synopsis: A Bugsnag client for Haskell.
 description: Please see the README at <https://github.com/jwoudenberg/bugsnag-hs>.
 author: Jasper Woudenberg
 maintainer: mail@jasperwoudenberg.com
-copyright: 2019 Jasper Woudenberg
+copyright: 2020 Jasper Woudenberg
 homepage: https://github.com/jwoudenberg/bugsnag-hs#readme
 license-file: LICENSE
 category: Web
