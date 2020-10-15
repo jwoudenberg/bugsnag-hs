@@ -1,3 +1,7 @@
+# 0.2.0.3
+
+- Relax version bounds to include time-1.11.
+
 # 0.2.0.2
 
 - Drop dependency on auto-update and stm packages.
