@@ -13,7 +13,7 @@ homepage:       https://github.com/jwoudenberg/bugsnag-hs#readme
 bug-reports:    https://github.com/jwoudenberg/bugsnag-hs/issues
 author:         Jasper Woudenberg
 maintainer:     mail@jasperwoudenberg.com
-copyright:      2020 Jasper Woudenberg
+copyright:      2021 Jasper Woudenberg
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
