@@ -1,3 +1,7 @@
+# 0.2.0.4
+
+- Relax version bounds to include time-1.12.
+
 # 0.2.0.3
 
 - Relax version bounds to include time-1.11.
