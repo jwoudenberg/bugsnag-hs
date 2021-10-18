@@ -1,4 +1,4 @@
-# 0.2.0.5
+# 0.2.0.6
 
 - Relax version bounds to inlude time-1.x.
 
