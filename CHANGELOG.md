@@ -1,4 +1,11 @@
+# 0.2.0.7
+
+- Relax version bounds to inlude time-1.x.
+
 # 0.2.0.6
+
+Warning: this version accidentally reverted the changes in 0.2.0.4. You're
+recommended to skip this and go directly to 0.2.0.7.
 
 - Relax version bounds to inlude time-1.x.
 
