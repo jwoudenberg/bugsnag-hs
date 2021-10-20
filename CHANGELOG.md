@@ -1,6 +1,6 @@
-# 0.2.0.5
+# 0.2.0.6
 
-- Relax version bounds to include aeson-2.0.x.
+- Relax version bounds to inlude time-1.x.
 
 # 0.2.0.4
 
