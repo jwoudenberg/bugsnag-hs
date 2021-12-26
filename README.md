@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/jwoudenberg/bugsnag-hs.svg?branch=trunk)](https://travis-ci.org/jwoudenberg/bugsnag-hs)
-
 # bugsnag-hs
 
 A [Bugsnag][] client for Haskell. Bugsnag is an application monitoring and error reporting tool. This library provides an API for sending reports to the [Bugsnag error reporting API][].
