@@ -1,3 +1,7 @@
+# 0.2.0.8
+
+- Relax version bounds to inlude text-2.0.x.
+
 # 0.2.0.7
 
 - Relax version bounds to inlude time-1.x.
