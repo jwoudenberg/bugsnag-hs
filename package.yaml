@@ -1,10 +1,10 @@
 name: bugsnag-hs
-version: 0.2.0.8
+version: 0.2.0.9
 synopsis: A Bugsnag client for Haskell.
 description: Please see the README at <https://github.com/jwoudenberg/bugsnag-hs>.
 author: Jasper Woudenberg
 maintainer: mail@jasperwoudenberg.com
-copyright: 2021 Jasper Woudenberg
+copyright: 2022 Jasper Woudenberg
 homepage: https://github.com/jwoudenberg/bugsnag-hs#readme
 license-file: LICENSE
 category: Web
@@ -16,7 +16,7 @@ data-files:
 - test/sample-report.json
 library:
   dependencies:
-  - aeson >= 1.2.4.0 && < 2.1
+  - aeson >= 1.2.4.0 && < 2.2
   - base >= 4.10.1.0 && < 5
   - bytestring >= 0.10.8.2 && < 0.12
   - http-client >= 0.5.10 && < 0.8
