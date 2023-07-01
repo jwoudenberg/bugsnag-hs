@@ -1,3 +1,7 @@
+# 0.2.0.10
+
+- Expand version bounds to include aeson v2.2.x.
+
 # 0.2.0.9
 
 - Expand version bounds to include aeson v2.1.x.
