@@ -46,6 +46,7 @@ module Network.Bugsnag
     exception_message,
     exception_stacktrace,
     exception_type,
+    exception_originalException,
 
     -- ** StackFrame
     StackFrame,
@@ -283,7 +284,7 @@ module Network.Bugsnag
   )
 where
 
-import Control.Exception (try)
+import Control.Exception (SomeException, try)
 import Control.Monad (void)
 import qualified Data.Aeson
 import qualified Data.ByteString.Char8
@@ -499,16 +500,63 @@ data Exception = Exception
     -- | An array of stackframe objects. Each object represents one line in the exception's stacktrace. Bugsnag uses this information to help with error grouping, as well as displaying it to the user.
     exception_stacktrace :: [StackFrame],
     -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
-    exception_type :: Maybe ExceptionType
+    exception_type :: Maybe ExceptionType,
+    -- | This carries the original exception that generated this
+    -- 'Exception'.
+    exception_originalException :: Maybe SomeException
   }
   deriving (Generic, Show)
 
 instance Data.Aeson.ToJSON Exception where
+  toJSON = Data.Aeson.toJSON . apiExceptionFromException
+  toEncoding = Data.Aeson.toEncoding . apiExceptionFromException
+
+instance Data.Aeson.FromJSON Exception where
+  parseJSON = fmap apiExceptionToException . Data.Aeson.parseJSON
+
+-- | A type that exactly represents the shape expected by the API. This is
+-- used for JSON encoding and decoding.
+data ApiException = ApiException
+  { -- | The class of error which occurred. This field is used to group the errors together so should not contain any contextual information that would prevent correct grouping. This would ordinarily be the Exception name when dealing with an exception.
+    apiexception_errorClass :: Text,
+    -- | The error message associated with the error. Usually this will contain some information about this specific instance of the error and is not used to group the errors.
+    apiexception_message :: Maybe Text,
+    -- | An array of stackframe objects. Each object represents one line in the exception's stacktrace. Bugsnag uses this information to help with error grouping, as well as displaying it to the user.
+    apiexception_stacktrace :: [StackFrame],
+    -- | This should be set for the following platforms so that the stacktrace can be parsed correctly:
+    apiexception_type :: Maybe ExceptionType
+  }
+  deriving (Generic, Show)
+
+-- | Converts an 'ApiException' to an 'Exception'. Has a 'Nothing' for the
+-- 'exception_originalException' field.
+apiExceptionToException :: ApiException -> Exception
+apiExceptionToException apiException =
+  Exception
+    { exception_errorClass = apiexception_errorClass apiException,
+      exception_message = apiexception_message apiException,
+      exception_stacktrace = apiexception_stacktrace apiException,
+      exception_type = apiexception_type apiException,
+      exception_originalException = Nothing
+    }
+
+-- | Converts an 'Exception' to an 'ApiException'. The
+-- 'exception_originalException' field is dropped.
+apiExceptionFromException :: Exception -> ApiException
+apiExceptionFromException exception =
+  ApiException
+    { apiexception_errorClass = exception_errorClass exception,
+      apiexception_message = exception_message exception,
+      apiexception_stacktrace = exception_stacktrace exception,
+      apiexception_type = exception_type exception
+    }
+
+instance Data.Aeson.ToJSON ApiException where
   toJSON = Data.Aeson.genericToJSON aesonOptions
 
   toEncoding = Data.Aeson.genericToEncoding aesonOptions
 
-instance Data.Aeson.FromJSON Exception where
+instance Data.Aeson.FromJSON ApiException where
   parseJSON = Data.Aeson.genericParseJSON aesonOptions
 
 -- | A default exception.
@@ -518,7 +566,8 @@ defaultException =
     { exception_errorClass = "",
       exception_message = Nothing,
       exception_stacktrace = [],
-      exception_type = Nothing
+      exception_type = Nothing,
+      exception_originalException = Nothing
     }
 
 -- | Each stackrame represents one line in the exception's stacktrace. Bugsnag uses this information to help with error grouping, as well as displaying it to the user.
