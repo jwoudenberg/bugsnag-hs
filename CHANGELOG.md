@@ -1,3 +1,7 @@
+# 0.2.0.12
+
+- Expand version bounds to include text v2.1.x.
+
 # 0.2.0.11
 
 - Expand version bounds to include bytestring v0.12.x.
