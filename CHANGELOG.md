@@ -1,4 +1,4 @@
-# 0.2.0.12
+# 0.2.0.13
 
 - Expand version bounds to include text v2.1.x.
 
